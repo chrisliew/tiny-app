@@ -13,7 +13,7 @@ function generateRandomString() {
   }
   return text;
 }
-generateRandomString()
+// generateRandomString()
 
 app.set("view engine", "ejs");
 
@@ -92,6 +92,14 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+    //1. Find URL in database
+    // let urlID = req.params.id;
+
+    delete urlDatabase[req.params.id];
+
+  res.redirect("/urls");
+})
 
 
 

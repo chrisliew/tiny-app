@@ -18,18 +18,26 @@
   <table>
       <%
       for(var keys in urls) { %>
-      <tr><td><%= keys %></td><td><%= urls[keys] %></td><td><a href="Placeholder">Placeholder link for shortened URL</a><td></tr>
+      <tr><td><%= keys %></td>
+        <td><%= urls[keys] %></td><td>
+
+        <a href="Placeholder">Placeholder link for shortened URL</a><td>
+
+      <td>
+       <form method="POST" action="/urls/<%=keys%>/delete">
+        <button type="submit">Delete</button>
+      </form> </td>
+        </tr>
+
       <% }; %>
+
+
     </table>
-    <pre><%= JSON.stringify(urls) %></pre>
-
-
 
 
 </body>
 </html>
 
 
-var urlDatabase = {
 
-}
+
