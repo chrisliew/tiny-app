@@ -13,16 +13,14 @@ function generateRandomString() {
   }
   return text;
 }
-
+generateRandomString()
 
 app.set("view engine", "ejs");
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
 };
-
-
 
 app.get("/", (req, res) => {
   res.end("Hello!");
@@ -42,8 +40,9 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = {
-    urls: urlDatabase,
-   }
+    urls: urlDatabase
+   };
+
   res.render("urls_index", templateVars)
 });
 
@@ -53,16 +52,11 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
 
-let params = {
-  id: 'b2xVn2',
-  long: "http://www.lighthouselabs.ca"
-}
   let templateVars = {
-    shortURL: params.id,
-    longURL: params.long
+    shortURL: req.params.id,
+    longURL: urlDatabase[req.params.id]
   };
   res.render("urls_show", templateVars);
-
 });
 
 const bodyParser = require("body-parser");
@@ -70,13 +64,34 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // debug statement to see POST parameters
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+//create new data here?
+//push new data to database?
+//redirect below?
+//redirect does 3 things:
+  // sets http status to 300 level
+  // sets location header to path for redirect
+  // sends repsonse back
+// req.params gives you an object that specifies whatever at end as a key
+// see find function, to iterate through array.
+// write out steps here
+// let x = req.params.whatever
+  //add a new key value pair to URL Database
+  let templateVars = {
+    urls: urlDatabase
+  }
+
+  let random = generateRandomString()
+  urlDatabase[random] = req.body.longURL;
+
+  res.redirect('/urls/' + random);
+});
+
+app.get("/u/:shortURL", (req, res) => {
+
+    var longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
 });
 
 
 
 
-// In express_server.js, add a new route handler for "/urls" and use res.render() to pass the URL data to your template.
-// Use the example below as a reference for what this route handler should look like.
-// Since you modified your server file (express_server.js), restart your Express server (you can shut it down with Ctrl + C in your Terminal, then start it up again with the command node express_server.js) and browse to http://localhost:8080/urls.
-// This will be a blank page right now – that's expected! You'll be filling it out with content in the next step.
