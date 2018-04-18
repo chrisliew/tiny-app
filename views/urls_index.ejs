@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <!-- Add your EJS code here -->
+    <p>Shortened and Full Length URL Table</p>
+
+  <table>
+      <%
+      for(var keys in urls) { %>
+      <tr><td><%= keys %></td><td><%= urls[keys] %></td><td><a href="Placeholder">Placeholder link for shortened URL</a><td></tr>
+      <% }; %>
+    </table>
+    <pre><%= JSON.stringify(urls) %></pre>
+
+
+
+
+</body>
+</html>
+
+
+var urlDatabase = {
+
+}
