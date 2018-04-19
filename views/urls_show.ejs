@@ -2,17 +2,21 @@
 <html lang="en">
 
 
- -->
+
 <head>
   <title>TinyApp</title>
 </head>
 <body>
     <!-- Add your EJS code here -->
-    <p>Display Single URL and shortened form</p>
 
-    <pre><%= shortURL + " " + longURL %></pre>
+    <!-- <pre><%= shortURL + " " + longURL %></pre> -->
 
+        <form method="POST" action="/urls/<%= shortURL %>">
+          <p><%= "ShortURL: " + shortURL%></p>
 
+        <input id="updatedLongURL" type="text" name="updatedLongURL" value= <%=longURL%> >
+        <button type="submit">Update</button>
+      </form>
 
 </body>
 </html>

@@ -18,15 +18,20 @@
   <table>
       <%
       for(var keys in urls) { %>
-      <tr><td><%= keys %></td>
-        <td><%= urls[keys] %></td><td>
+      <tr>
+      <td><a href="Placeholder">Placeholder link for shortened URL</a><td>
 
-        <a href="Placeholder">Placeholder link for shortened URL</a><td>
+      <td><%= keys %></td>
+      <td><%= urls[keys] %></td>
+
+      <td><a href="/urls/<%=keys%>">Edit</a></td>
 
       <td>
        <form method="POST" action="/urls/<%=keys%>/delete">
         <button type="submit">Delete</button>
       </form> </td>
+
+
         </tr>
 
       <% }; %>

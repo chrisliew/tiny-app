@@ -101,5 +101,38 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 })
 
+app.post("/urls/:id", (req, res) => {
+  // 1. Find longURL in database
+  let findURL = req.params.id;
+  console.log("asdf" + findURL)
+  // 2. Update it
+  urlDatabase[findURL] = req.body.updatedLongURL;
+  console.log(req.body.updatedLongURL)
 
+  // res.render("urls_show", templateVars);
+
+
+  res.redirect("/urls");
+
+});
+
+
+//3. redirect back
+
+
+// // Update the dog
+// app.post('/dogs/:id', (req, res) => {
+//   // 1. Find the dog in the database
+//   let dogId = req.params.id;
+//   let targetDog = dogDatabase.find(function(dog) {
+//     return dog.id === dogId;
+//   })
+
+//   // 2. Update it
+//   targetDog.name = req.body.name;
+//   targetDog.color = req.body.color;
+
+//   // 3. Redirect to dog list
+//   res.redirect('/dogs');
+// });
 
