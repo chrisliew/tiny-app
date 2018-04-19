@@ -1,17 +1,31 @@
 <!-- views/partials/header.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
 <p>Your Short URL's</p>
 
-<nav class="navbar navbar-default" role="navigation">
-<div class="container-fluid">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <% if (username) { %>
 
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-        </a>
+    <p><%= username %></p>
 
-        <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-        </ul>
-    </div>
+      <form method="POST" action="/logout">
+        <input type="submit" value="logout">
+      </form>
 
-</div>
-</nav>
+    <%} else{ %>
+
+      <form method="POST" action="/login">
+        <p>Username Form</p>
+        <input id="username" type="text" name="username" placeholder= "input username here" >
+        <button type="submit">Update</button>
+      </form>
+
+  <% } %>
+
+</body>
+</html>

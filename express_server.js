@@ -1,7 +1,15 @@
 var express = require("express");
+var cookieParser = require('cookie-parser');
 var app = express();
 var PORT = process.env.PORT || 8080; // default port 8080
 
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  const { username }  = req.cookies;
+  res.locals.username = username;
+  next();
+});
 
 function generateRandomString() {
 
@@ -39,6 +47,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
+
   let templateVars = {
     urls: urlDatabase
    };
@@ -50,11 +59,18 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
+
+
 app.get("/urls/:id", (req, res) => {
 
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
+    username: req.cookies["username"]
   };
   res.render("urls_show", templateVars);
 });
@@ -104,35 +120,27 @@ app.post("/urls/:id/delete", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   // 1. Find longURL in database
   let findURL = req.params.id;
-  console.log("asdf" + findURL)
   // 2. Update it
   urlDatabase[findURL] = req.body.updatedLongURL;
-  console.log(req.body.updatedLongURL)
-
-  // res.render("urls_show", templateVars);
 
 
   res.redirect("/urls");
 
 });
 
+app.post("/login", (req, res) =>  {
+  // const username = req.body['username'];
+  res.cookie("username", req.body['username']);
+  res.redirect("/urls");
+});
 
-//3. redirect back
+
+app.post("/logout", (req, res) => {
+
+  res.clearCookie("username", req.body['username']);
+  res.redirect("/urls");
+});
 
 
-// // Update the dog
-// app.post('/dogs/:id', (req, res) => {
-//   // 1. Find the dog in the database
-//   let dogId = req.params.id;
-//   let targetDog = dogDatabase.find(function(dog) {
-//     return dog.id === dogId;
-//   })
 
-//   // 2. Update it
-//   targetDog.name = req.body.name;
-//   targetDog.color = req.body.color;
-
-//   // 3. Redirect to dog list
-//   res.redirect('/dogs');
-// });
 
