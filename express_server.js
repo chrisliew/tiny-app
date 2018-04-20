@@ -10,8 +10,8 @@ var PORT = process.env.PORT || 8080; // default port 8080
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  const { username }  = req.cookies;
-  res.locals.username = username;
+  // const { username }  = req.cookies;
+  // res.locals.username = username;
   const { user } = req.cookies;
   res.locals.users = users
   next();
@@ -52,23 +52,38 @@ app.get("/hello", (req, res) => {
 
 //Creates a new route urls and uses res.render to pass URL data to urls_index.ejs
 app.get("/urls", (req, res) => {
-  let templateVars = {
-    urls: urlDatabase,
-    userObject: users[req.cookies.user_id]['email']
-  }
+
+
+    let templateVars = {
+      urls: urlDatabase,
+      userObject: users[req.cookies.user_id],
+      cookies: req.cookies
+
+    };
+      console.log(users[req.cookies])
+
+
+
   res.render("urls_index", templateVars);
+  // res.json(req.cookies.user_id);
 });
 
 
 //Creates a new GET route urls/new to present form to user. This will render the page with the form.
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = {userObject: users[req.cookies.user_id]};
+  console.log(users[req.cookies])
+  // console.log(JSON.stringify(users[req.cookies]))
+  res.render("urls_new", templateVars);
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
-})
 
+
+app.post("/urls/new", (req, res) => {
+  if(req.cookie.user_id === undefined) {
+    res.redirect("/login");
+  }
+});
 
 //** Very important to have all get requests for urls/xxx above this, so it's from most specific to least.
 // Creates a new route /urls/:id and uses res.render to pass shortURL and longURL data to urls_show.ejs
@@ -76,10 +91,10 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
-    // username: req.cookies["username"]
-   userObject: users[req.cookies.user_id]['email']
+   userObject: users[req.cookies.user_id],
+   cookies: req.cookies
   }
-  console.log(userObject);
+
   res.render("urls_show", templateVars);
 });
 
@@ -92,7 +107,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 // After receive request (in urls/new) and the form is submitted, this adds a new key value pair
 // (ShortURL and LongURL) and creates a new key and value in the database.  Redirects to the new page with ShortURL tag
 app.post("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase};
+  let templateVars = {
+    urls: urlDatabase,
+    userObject: users[req.cookies.user_id]
+  };
+
   let random = generateRandomString();
   urlDatabase[random] = req.body.longURL;
   res.redirect('/urls/' + random);
@@ -122,15 +141,12 @@ app.post("/urls/:id", (req, res) => {
 });
 
 //This will take the form data from login.ejs. SETS the cookie using res.cookie.
-app.post("/login", (req, res) =>  {
-  res.cookie("username", req.body['username']);
-  res.redirect("/urls");
-});
+
 
 //If the button logout is clicked this will execute.
 app.post("/logout", (req, res) => {
-  res.clearCookie("username", req.body['username']);
-  res.redirect("/urls");
+  res.clearCookie("user_id", req.body.user_id);
+  res.redirect("/login");
 });
 
 const users = {
@@ -167,22 +183,51 @@ app.post("/register", (req, res) => {
   let newEmail = req.body.email;
   let newPassword = req.body.password;
 
-  if(!newEmail | !newPassword) {
-    res.end("<html><body>400 Error: Email or Password not Entered in Correctly </body></html>\n");
+  for(var userID in users) {
+    if(newEmail === users[userID].email) {
+      res.end("<html><body>400 Error: Email already exists choose another one </body><html>\n");
+    }
+    else if(!newEmail | !newPassword) {
+      res.end("<html><body>400 Error: Email or Password not Entered in Correctly </body></html>\n");
   }
-  else {
-    users[randomID] = {
-      id: randomID,
-      email: newEmail,
-      password: newPassword
-    };
+    else {
+      users[randomID] = {
+        id: randomID,
+        email: newEmail,
+        password: newPassword
+      };
+    }
   }
 
   res.cookie("user_id", randomID);
-
-  console.log(users);
   res.redirect("/urls");
 
+});
+
+
+app.get("/login", (req, res) => {
+  res.render("login");
+})
+
+
+app.post("/login", (req, res) =>  {
+  //if login email and login password is equal to the users[emailloign].email and password
+  //then login to the website
+  let newEmail = req.body.emailLogin;
+  let newPassword = req.body.passwordLogin;
+
+
+    for(var userId in users) {
+    var user = users[userId];
+
+    if(user.email === newEmail && user.password === newPassword) {
+      res.cookie("user_id", userId);
+      res.redirect("/urls");
+      return;
+    }
+  }
+
+  res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
 
 

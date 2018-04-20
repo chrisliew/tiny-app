@@ -20,6 +20,7 @@
       <% for(var keys in urls) { %>
         <tr>
           <td><a href="Placeholder">Placeholder link for shortened URL</a><td>
+          <td><%= cookies %></td>
           <td><%= keys %></td>
           <td><%= urls[keys] %></td>
           <td><a href="/urls/<%=keys%>">Edit</a></td>
