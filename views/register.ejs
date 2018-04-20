@@ -1,4 +1,7 @@
 <!-- Register form.  This posts to register  -->
+<!-- If the e-mail or password are empty strings, send back a response with the 400 status code.
+If someone tries to register with an existing user's email, send back a response with the 400 status code.
+ -->
 <form method="POST" action="/register">
   <p> Register Here: </p>
   <p> Email: </p>

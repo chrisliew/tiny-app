@@ -11,8 +11,8 @@
   <title>TinyApp</title>
 </head>
 <body>
-  <% if (username) { %>
-    <p><%= username %></p>
+  <% if (userObject) { %>
+    <p><%= userObject %></p>
       <form method="POST" action="/logout">
         <input type="submit" value="logout">
       </form>

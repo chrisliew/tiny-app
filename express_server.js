@@ -12,6 +12,8 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   const { username }  = req.cookies;
   res.locals.username = username;
+  const { user } = req.cookies;
+  res.locals.users = users
   next();
 });
 
@@ -50,7 +52,10 @@ app.get("/hello", (req, res) => {
 
 //Creates a new route urls and uses res.render to pass URL data to urls_index.ejs
 app.get("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase};
+  let templateVars = {
+    urls: urlDatabase,
+    userObject: users[req.cookies.user_id]['email']
+  }
   res.render("urls_index", templateVars);
 });
 
@@ -71,8 +76,10 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
-    username: req.cookies["username"]
-  };
+    // username: req.cookies["username"]
+   userObject: users[req.cookies.user_id]['email']
+  }
+  console.log(userObject);
   res.render("urls_show", templateVars);
 });
 
@@ -159,11 +166,18 @@ app.post("/register", (req, res) => {
   let randomID = generateRandomString();
   let newEmail = req.body.email;
   let newPassword = req.body.password;
-  users[randomID] = {
-    id: randomID,
-    email: newEmail,
-    password: newPassword
-  };
+
+  if(!newEmail | !newPassword) {
+    res.end("<html><body>400 Error: Email or Password not Entered in Correctly </body></html>\n");
+  }
+  else {
+    users[randomID] = {
+      id: randomID,
+      email: newEmail,
+      password: newPassword
+    };
+  }
+
   res.cookie("user_id", randomID);
 
   console.log(users);
