@@ -57,10 +57,9 @@ app.get("/urls", (req, res) => {
     let templateVars = {
       urls: urlDatabase,
       userObject: users[req.cookies.user_id],
-      cookies: req.cookies
+      cookies: req.cookies.user_id
 
     };
-      console.log(users[req.cookies])
 
 
 
@@ -72,8 +71,6 @@ app.get("/urls", (req, res) => {
 //Creates a new GET route urls/new to present form to user. This will render the page with the form.
 app.get("/urls/new", (req, res) => {
   let templateVars = {userObject: users[req.cookies.user_id]};
-  console.log(users[req.cookies])
-  // console.log(JSON.stringify(users[req.cookies]))
   res.render("urls_new", templateVars);
 });
 
@@ -92,10 +89,14 @@ app.get("/urls/:id", (req, res) => {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
    userObject: users[req.cookies.user_id],
-   cookies: req.cookies
+   cookies: req.cookies.user_id
   }
-
+  if(users[req.cookies.user_id] === undefined) {
+    res.redirect('/urls');
+  }
+  else {
   res.render("urls_show", templateVars);
+  }
 });
 
 //Body parser library allows us to access POST request parameters, where we'll store in urlDatabase for now.
@@ -113,6 +114,7 @@ app.post("/urls", (req, res) => {
   };
 
   let random = generateRandomString();
+
   urlDatabase[random] = req.body.longURL;
   res.redirect('/urls/' + random);
 });
@@ -125,9 +127,16 @@ app.get("/u/:shortURL", (req, res) => {
 
 //This matches the POST form in url_index. If user clicks it will delete the line.
 app.post("/urls/:id/delete", (req, res) => {
+
+  if(users[req.cookies.user_id] === undefined) {
+    res.redirect('/urls');
+  }
+  else {
   delete urlDatabase[req.params.id];
+    }
   res.redirect("/urls");
 })
+
 
 //App.Post so the order doesn't matter.  When form at urls_show is clicked, looks at the long URL.
 //Uses BODY below to pull data from the urls_show that entered in then updates the longURL (posts to it)
@@ -216,7 +225,7 @@ app.post("/login", (req, res) =>  {
   let newEmail = req.body.emailLogin;
   let newPassword = req.body.passwordLogin;
 
-//cosdfk
+
     for(var userId in users) {
     var user = users[userId];
 
@@ -229,7 +238,6 @@ app.post("/login", (req, res) =>  {
 
   res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
-
 
 
 
