@@ -1,6 +1,5 @@
 <!-- views/partials/header.ejs -->
 <!-- Header is included to keep code dry.  Also can be used to separate from other parts of page. -->
-<!-- This is a username login and logout header -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,17 +10,15 @@
   <title>TinyApp</title>
 </head>
 <body>
-  <% if (userObject) { %>
-    <p><%= userObject %></p>
+
+  <% if(userObject === undefined) { %>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+  <%} else { %>
+   <%= "User logged in as " + userObject['email'] %>
       <form method="POST" action="/logout">
-        <input type="submit" value="logout">
-      </form>
-    <%} else{ %>
-      <form method="POST" action="/login">
-        <p>Login Here:</p>
-        <input id="username" type="text" name="username" placeholder= "Enter login here" >
-        <button type="submit">Update</button>
-      </form>
+      <input type="submit" value="logout">
+    </form>
   <% } %>
 
 </body>
