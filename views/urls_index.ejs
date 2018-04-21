@@ -10,25 +10,35 @@
   <title>TinyApp</title>
 </head>
 
-<body>
-  <p>Shortened and Full Length URL Table</p>
 
-<!--   This table is fed data from the render urls_index.  It loops through the URLDatabase and returns a table.
-  The first column of the table returns the shortened URL (Key of the object)
-  The second column of the table returns the full URL. Third column is edit link and fourth is delete.-->
-  <table>
+<body>
+  <% if(cookies) {%>
+    <p>Shortened and Full Length URL Table</p>
+    <table>
+        <tr>
+          <th>UserID</th>
+          <th>Short URL</th>
+          <th>Long URL</th>
+          <th>Edit</th>
+          <th>Delete</th>
       <% for(var keys in urls) { %>
         <tr>
-          <td><a href="Placeholder">Placeholder link for shortened URL</a><td>
-          <td><%= JSON.stringify(cookies) %></td>
-          <td><%= keys %></td>
-          <td><%= urls[keys] %></td>
-          <td><a href="/urls/<%=keys%>">Edit</a></td>
-          <td><form method="POST" action="/urls/<%=keys%>/delete">
-              <button type="submit">Delete</button></form></td>
+          <% if(urls[keys]['userID'] === cookies) {%>
+            <td><%= urls[keys]['userID'] %></td>
+            <td><%= keys %></td>
+            <td><%= urls[keys]['longURL'] %></td>
+            <td><a href="/urls/<%=keys%>">Edit</a></td>
+            <td><form method="POST" action="/urls/<%=keys%>/delete">
+                <button type="submit">Delete</button></form></td>
+            <% } %>
+          <% } %>
         </tr>
-      <% } %>
     </table>
+  <%} else {%>
+    <p> Please login above to see your URL's </p>
+  <%} %>
+
+
 </body>
 </html>
 

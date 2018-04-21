@@ -30,8 +30,14 @@ function generateRandomString() {
 }
 
 var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  "b2xVn2": {
+    longURL: "http://www.lighthouselabs.ca",
+    userID: 'defaultUser'
+  },
+  "9sm5xK": {
+  longURL: "http://www.google.com",
+  userID: 'defaultUser'
+  }
 };
 
 app.get("/", (req, res) => {
@@ -53,30 +59,32 @@ app.get("/hello", (req, res) => {
 //Creates a new route urls and uses res.render to pass URL data to urls_index.ejs
 app.get("/urls", (req, res) => {
 
-
     let templateVars = {
       urls: urlDatabase,
       userObject: users[req.cookies.user_id],
-      cookies: req.cookies.user_id
-
+      cookies: req.cookies.user_id,
     };
 
-
-
+    //create function that returns subset of URL database with id
+    //if cookie is equal to database userID then filter here
+    //if no cookie then want to display no database
   res.render("urls_index", templateVars);
-  // res.json(req.cookies.user_id);
 });
+
 
 
 //Creates a new GET route urls/new to present form to user. This will render the page with the form.
 app.get("/urls/new", (req, res) => {
+
   let templateVars = {userObject: users[req.cookies.user_id]};
   res.render("urls_new", templateVars);
+
 });
 
 
 
 app.post("/urls/new", (req, res) => {
+console.log("redirect check");
   if(req.cookie.user_id === undefined) {
     res.redirect("/login");
   }
@@ -87,7 +95,7 @@ app.post("/urls/new", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id],
+    longURL: urlDatabase[req.params.id].longURL,
    userObject: users[req.cookies.user_id],
    cookies: req.cookies.user_id
   }
@@ -115,38 +123,52 @@ app.post("/urls", (req, res) => {
 
   let random = generateRandomString();
 
-  urlDatabase[random] = req.body.longURL;
-  res.redirect('/urls/' + random);
+  if(templateVars.userObject === undefined) {
+    res.redirect('/urls')
+  }
+  else if(templateVars.userObject) {
+    urlDatabase[random] = {
+      longURL: req.body.longURL,
+      userID: req.cookies.user_id
+    };
+
+    res.redirect('/urls/' + random);
+  };
+  console.log(urlDatabase);
+
 });
 
 //With any URL that has /u/ with corresponding shortURL in the database, this will redirect to the longURL
 app.get("/u/:shortURL", (req, res) => {
-    var longURL = urlDatabase[req.params.shortURL];
+    var longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
 //This matches the POST form in url_index. If user clicks it will delete the line.
 app.post("/urls/:id/delete", (req, res) => {
 
-  if(users[req.cookies.user_id] === undefined) {
-    res.redirect('/urls');
+  if(req.cookies.user_id === urlDatabase[req.params.id].userID) {
+    delete urlDatabase[req.params.id];
   }
   else {
-  delete urlDatabase[req.params.id];
-    }
+    res.redirect('/urls');
+  }
   res.redirect("/urls");
 })
 
 
 //App.Post so the order doesn't matter.  When form at urls_show is clicked, looks at the long URL.
-//Uses BODY below to pull data from the urls_show that entered in then updates the longURL (posts to it)
+// EDIT portion
 app.post("/urls/:id", (req, res) => {
-  // 1. Find longURL in database
-  let findURL = req.params.id;
-  // 2. Updates it
-  urlDatabase[findURL] = req.body.updatedLongURL;
-  res.redirect("/urls");
 
+  if(req.cookies.user_id === urlDatabase[req.params.id].userID) {
+    let findURL = req.params.id;
+    urlDatabase[findURL].longURL = req.body.updatedLongURL;
+    res.redirect("/urls");
+  }
+  else {
+    res.redirect("/urls");
+  }
 });
 
 //This will take the form data from login.ejs. SETS the cookie using res.cookie.
@@ -225,7 +247,6 @@ app.post("/login", (req, res) =>  {
   let newEmail = req.body.emailLogin;
   let newPassword = req.body.passwordLogin;
 
-
     for(var userId in users) {
     var user = users[userId];
 
@@ -238,6 +259,12 @@ app.post("/login", (req, res) =>  {
 
   res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
+
+//bcrypt password hasher
+const bcrypt = require('bcrypt');
+const password = "purple-monkey-dinosaur"; // you will probably this from req.params
+const hashedPassword = bcrypt.hashSync(password, 10);
+
 
 
 
