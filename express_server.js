@@ -58,19 +58,31 @@ app.get("/hello", (req, res) => {
 
 //Creates a new route urls and uses res.render to pass URL data to urls_index.ejs
 app.get("/urls", (req, res) => {
-
+  let filteredDatabase = urlsForUser(req.cookies.user_id);
     let templateVars = {
       urls: urlDatabase,
       userObject: users[req.cookies.user_id],
       cookies: req.cookies.user_id,
+      filteredDatabase: filteredDatabase
+
     };
+
+  res.render("urls_index", templateVars);
+});
 
     //create function that returns subset of URL database with id
     //if cookie is equal to database userID then filter here
     //if no cookie then want to display no database
-  res.render("urls_index", templateVars);
-});
 
+function urlsForUser(id) {
+  let filteredDatabase = {};
+  for(var keys in urlDatabase) {
+    if(urlDatabase[keys].userID === id)  {
+      filteredDatabase[keys] = urlDatabase[keys];
+    }
+  }
+  return filteredDatabase;
+}
 
 
 //Creates a new GET route urls/new to present form to user. This will render the page with the form.
@@ -134,8 +146,6 @@ app.post("/urls", (req, res) => {
 
     res.redirect('/urls/' + random);
   };
-  console.log(urlDatabase);
-
 });
 
 //With any URL that has /u/ with corresponding shortURL in the database, this will redirect to the longURL
@@ -260,10 +270,10 @@ app.post("/login", (req, res) =>  {
   res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
 
-//bcrypt password hasher
-const bcrypt = require('bcrypt');
-const password = "purple-monkey-dinosaur"; // you will probably this from req.params
-const hashedPassword = bcrypt.hashSync(password, 10);
+// //bcrypt password hasher
+// const bcrypt = require('bcrypt');
+// const password = "purple-monkey-dinosaur"; // you will probably this from req.params
+// const hashedPassword = bcrypt.hashSync(password, 10);
 
 
 

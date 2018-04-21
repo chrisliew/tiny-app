@@ -21,16 +21,14 @@
           <th>Long URL</th>
           <th>Edit</th>
           <th>Delete</th>
-      <% for(var keys in urls) { %>
+      <% for(var newKeys in filteredDatabase) { %>
         <tr>
-          <% if(urls[keys]['userID'] === cookies) {%>
-            <td><%= urls[keys]['userID'] %></td>
-            <td><%= keys %></td>
-            <td><%= urls[keys]['longURL'] %></td>
-            <td><a href="/urls/<%=keys%>">Edit</a></td>
-            <td><form method="POST" action="/urls/<%=keys%>/delete">
+            <td><%= filteredDatabase[newKeys]['userID'] %></td>
+            <td><%= newKeys %></td>
+            <td><%= filteredDatabase[newKeys]['longURL'] %></td>
+            <td><a href="/urls/<%=newKeys%>">Edit</a></td>
+            <td><form method="POST" action="/urls/<%=newKeys%>/delete">
                 <button type="submit">Delete</button></form></td>
-            <% } %>
           <% } %>
         </tr>
     </table>
