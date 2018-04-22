@@ -18,8 +18,7 @@
     <!-- <pre><%= shortURL + " " + longURL %></pre> -->
         <% if(databaseUserID === cookies) {%>
         <form method="POST" action="/urls/<%= shortURL %>">
-          <p><%= "ShortURL: " + shortURL%></p>
-
+          <p><%= "ShortURL:  " + shortURL + "  Date Created: " + createDate%></p>
         <input id="updatedLongURL" type="text" name="updatedLongURL" value= <%=longURL%> >
         <button type="submit">Update</button>
         <% } else {%>

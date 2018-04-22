@@ -39,24 +39,27 @@ function generateRandomString() {
 var urlDatabase = {
   "b2xVn2": {
     longURL: "http://www.lighthouselabs.ca",
-    userID: 'defaultUser'
+    userID: 'defaultUser',
+    createDate: "03/04/2019"
   },
   "9sm5xK": {
-  longURL: "http://www.google.com",
-  userID: 'defaultUser'
+    longURL: "http://www.google.com",
+    userID: 'defaultUser',
+    createDate: "02/03/2016"
   },
   "111111": {
-  longURL: "http://www.si.com",
-  userID: 'user4RandomID'
+    longURL: "http://www.si.com",
+    userID: 'user4RandomID',
+    createDate: "01/31/2018"
   }
 };
 
 app.get("/", (req, res) => {
-  if(req.session) {
-    res.redirect("/urls");
+  if(req.session.user_id === undefined) {
+    res.redirect("/login");
   }
   else {
-    res.redirect("/login");
+    res.redirect("/urls");
   }
 
 });
@@ -127,7 +130,8 @@ app.get("/urls/:id", (req, res) => {
     longURL: urlDatabase[req.params.id].longURL,
    userObject: users[req.session.user_id],
    cookies: req.session.user_id,
-   databaseUserID: urlDatabase[req.params.id].userID
+   databaseUserID: urlDatabase[req.params.id].userID,
+   createDate: urlDatabase[req.params.id].createDate
   }
   if(users[req.session.user_id] === undefined) {
     res.end("<html><body>400 Error: You are not logged in.  Please log in to see your short URL'S.</html></body>")
@@ -163,7 +167,8 @@ app.post("/urls", (req, res) => {
   else if(templateVars.userObject) {
     urlDatabase[random] = {
       longURL: req.body.longURL,
-      userID: req.session.user_id
+      userID: req.session.user_id,
+      createDate: today
     };
 
     res.redirect('/urls/' + random);
@@ -284,8 +289,6 @@ app.post("/login", (req, res) =>  {
   let newEmail = req.body.emailLogin;
   const newPassword = req.body.passwordLogin;
   const hashedPassword = bcrypt.hashSync(newPassword, 10);
-      console.log(hashedPassword)
-
 
     for(var userId in users) {
     var user = users[userId];
@@ -297,14 +300,27 @@ app.post("/login", (req, res) =>  {
       return;
     }
   }
-  console.log(users)
   res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
 
 //*** HAD TO USE BCRYPTJS INSTEAD OF BCRYPT SEE HERE https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
 const bcrypt = require('bcryptjs');
 
+//Formula for today's date
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
 
+if(dd<10) {
+    dd = '0'+dd
+}
+
+if(mm<10) {
+    mm = '0'+mm
+}
+
+today = mm + '/' + dd + '/' + yyyy;
 
 
 

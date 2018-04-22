@@ -22,6 +22,7 @@
           <th>Long URL</th>
           <th>Edit</th>
           <th>Delete</th>
+          <th>Date Created</th>
       <% for(var newKeys in filteredDatabase) { %>
         <tr>
             <td><%= filteredDatabase[newKeys]['userID'] %></td>
@@ -30,6 +31,7 @@
             <td><a href="/urls/<%=newKeys%>">Edit</a></td>
             <td><form method="POST" action="/urls/<%=newKeys%>/delete">
                 <button type="submit">Delete</button></form></td>
+            <td><%= filteredDatabase[newKeys]['createDate']%></td>
           <% } %>
         </tr>
     </table>
