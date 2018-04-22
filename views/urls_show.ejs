@@ -16,12 +16,15 @@
     <!-- Add your EJS code here -->
 
     <!-- <pre><%= shortURL + " " + longURL %></pre> -->
-
+        <% if(databaseUserID === cookies) {%>
         <form method="POST" action="/urls/<%= shortURL %>">
           <p><%= "ShortURL: " + shortURL%></p>
 
         <input id="updatedLongURL" type="text" name="updatedLongURL" value= <%=longURL%> >
         <button type="submit">Update</button>
+        <% } else {%>
+      <p>400 Error: You do not own this URL please try another one</p>
+      <% } %>
       </form>
 
 </body>

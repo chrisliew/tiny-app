@@ -15,6 +15,7 @@ var PORT = process.env.PORT || 8080; // default port 8080
 //   next();
 // });
 
+
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
@@ -43,6 +44,10 @@ var urlDatabase = {
   "9sm5xK": {
   longURL: "http://www.google.com",
   userID: 'defaultUser'
+  },
+  "111111": {
+  longURL: "http://www.si.com",
+  userID: 'user4RandomID'
   }
 };
 
@@ -75,9 +80,8 @@ app.get("/urls", (req, res) => {
       urls: urlDatabase,
       userObject: users[req.session.user_id],
       cookies: req.session.user_id,
-      filteredDatabase: filteredDatabase
+      filteredDatabase: filteredDatabase,
     };
-
   res.render("urls_index", templateVars);
 });
 
@@ -98,13 +102,12 @@ function urlsForUser(id) {
 
 //Creates a new GET route urls/new to present form to user. This will render the page with the form.
 app.get("/urls/new", (req, res) => {
-
   let templateVars = {userObject: users[req.session.user_id]};
+  if(req.session.user_id === undefined) {
+    res.redirect("/login");
+  }
   res.render("urls_new", templateVars);
-
 });
-
-app.get("/")
 
 
 app.post("/urls/new", (req, res) => {
@@ -116,20 +119,26 @@ console.log("redirect check");
 
 //** Very important to have all get requests for urls/xxx above this, so it's from most specific to least.
 // Creates a new route /urls/:id and uses res.render to pass shortURL and longURL data to urls_show.ejs
+//if user logged in but doesn't own URL with ID, return HTML saying: you don't own URL!
 app.get("/urls/:id", (req, res) => {
+
   let templateVars = {
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id].longURL,
    userObject: users[req.session.user_id],
-   cookies: req.session.user_id
+   cookies: req.session.user_id,
+   databaseUserID: urlDatabase[req.params.id].userID
   }
   if(users[req.session.user_id] === undefined) {
+    res.end("<html><body>400 Error: You are not logged in.  Please log in to see your short URL'S.</html></body>")
     res.redirect('/urls');
   }
   else {
   res.render("urls_show", templateVars);
   }
 });
+
+
 
 //Body parser library allows us to access POST request parameters, where we'll store in urlDatabase for now.
 //Parses the app.post(urls) below to an object for example.
@@ -149,6 +158,7 @@ app.post("/urls", (req, res) => {
 
   if(templateVars.userObject === undefined) {
     res.redirect('/urls')
+
   }
   else if(templateVars.userObject) {
     urlDatabase[random] = {
@@ -159,6 +169,21 @@ app.post("/urls", (req, res) => {
     res.redirect('/urls/' + random);
   };
 });
+
+//App.Post so the order doesn't matter.  When form at urls_show is clicked, looks at the long URL.
+// EDIT portion
+app.post("/urls/:id", (req, res) => {
+  if(req.session.user_id === urlDatabase[req.params.id].userID) {
+    let findURL = req.params.id;
+    urlDatabase[findURL].longURL = req.body.updatedLongURL;
+    res.redirect("/urls");
+  }
+  else {
+    // res.end("<html><body>400 Error: You do not own this URL with your given ID</html></body>")
+    res.redirect("/urls");
+  }
+});
+
 
 //With any URL that has /u/ with corresponding shortURL in the database, this will redirect to the longURL
 app.get("/u/:shortURL", (req, res) => {
@@ -179,19 +204,7 @@ app.post("/urls/:id/delete", (req, res) => {
 })
 
 
-//App.Post so the order doesn't matter.  When form at urls_show is clicked, looks at the long URL.
-// EDIT portion
-app.post("/urls/:id", (req, res) => {
 
-  if(req.session.user_id === urlDatabase[req.params.id].userID) {
-    let findURL = req.params.id;
-    urlDatabase[findURL].longURL = req.body.updatedLongURL;
-    res.redirect("/urls");
-  }
-  else {
-    res.redirect("/urls");
-  }
-});
 
 //This will take the form data from login.ejs. SETS the cookie using res.cookie.
 

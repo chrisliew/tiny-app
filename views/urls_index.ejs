@@ -13,6 +13,7 @@
 
 <body>
   <% if(cookies) {%>
+    <a href="/urls/new">Create a New Short Link</a>
     <p>Shortened and Full Length URL Table</p>
     <table>
         <tr>
@@ -24,7 +25,7 @@
       <% for(var newKeys in filteredDatabase) { %>
         <tr>
             <td><%= filteredDatabase[newKeys]['userID'] %></td>
-            <td><%= newKeys %></td>
+            <td><a href="/u/<%=newKeys%>">http://localhost:8080/<%=newKeys%></a></td>
             <td><%= filteredDatabase[newKeys]['longURL'] %></td>
             <td><a href="/urls/<%=newKeys%>">Edit</a></td>
             <td><form method="POST" action="/urls/<%=newKeys%>/delete">
@@ -33,7 +34,7 @@
         </tr>
     </table>
   <%} else {%>
-    <p> Please login above to see your URL's </p>
+    <p> Please login or register above to create or see your short URL's </p>
   <%} %>
 
 
