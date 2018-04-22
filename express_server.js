@@ -222,24 +222,25 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   let randomID = generateRandomString();
   let newEmail = req.body.email;
-  let newPassword = req.body.password;
+  const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
   for(var userID in users) {
     if(newEmail === users[userID].email) {
       res.end("<html><body>400 Error: Email already exists choose another one </body><html>\n");
     }
-    else if(!newEmail | !newPassword) {
+    else if(!newEmail | !password) {
       res.end("<html><body>400 Error: Email or Password not Entered in Correctly </body></html>\n");
   }
     else {
       users[randomID] = {
         id: randomID,
         email: newEmail,
-        password: newPassword
+        password: hashedPassword
       };
     }
   }
-
+  console.log(users)
   res.cookie("user_id", randomID);
   res.redirect("/urls");
 
@@ -255,25 +256,24 @@ app.post("/login", (req, res) =>  {
   //if login email and login password is equal to the users[emailloign].email and password
   //then login to the website
   let newEmail = req.body.emailLogin;
-  let newPassword = req.body.passwordLogin;
+  const newPassword = req.body.passwordLogin;
+  const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
     for(var userId in users) {
     var user = users[userId];
 
-    if(user.email === newEmail && user.password === newPassword) {
+    if(user.email === newEmail && (bcrypt.compareSync(newPassword, user.password)) === true) {
       res.cookie("user_id", userId);
       res.redirect("/urls");
       return;
     }
   }
-
   res.end("<html><body>400 Error: Email or Password not correctly entered </body></html>\n");
 });
 
-// //bcrypt password hasher
-// const bcrypt = require('bcrypt');
-// const password = "purple-monkey-dinosaur"; // you will probably this from req.params
-// const hashedPassword = bcrypt.hashSync(password, 10);
+//*** HAD TO USE BCRYPTJS INSTEAD OF BCRYPT SEE HERE https://stackoverflow.com/questions/29320201/error-installing-bcrypt-with-npm
+const bcrypt = require('bcryptjs');
+
 
 
 

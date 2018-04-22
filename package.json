@@ -1,0 +1,45 @@
+{
+  "name": "tinyapp",
+  "version": "1.0.0",
+  "main": "express_server.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chownr": "^1.0.1",
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.6.9",
+    "ejs": "^2.5.9",
+    "express": "^4.16.3",
+    "fs-minipass": "^1.2.5",
+    "fsevents": "^1.2.0",
+    "iconv-lite": "^0.4.19",
+    "ignore-walk": "^3.0.1",
+    "inherits": "^2.0.3",
+    "jquery": "^3.3.1",
+    "minipass": "^2.2.4",
+    "minizlib": "^1.1.0",
+    "ms": "^2.0.0",
+    "nan": "^2.10.0",
+    "needle": "^2.2.0",
+    "nodemon": "^1.17.3",
+    "npm-bundled": "^1.0.3",
+    "npm-packlist": "^1.1.10",
+    "safe-buffer": "^5.1.1",
+    "sax": "^1.2.4",
+    "yallist": "^3.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MachoDhogo/TinyApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MachoDhogo/TinyApp/issues"
+  },
+  "homepage": "https://github.com/MachoDhogo/TinyApp#readme",
+  "description": ""
+}
