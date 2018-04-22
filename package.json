@@ -4,6 +4,7 @@
   "main": "express_server.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
     "chownr": "^1.0.1",
     "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
@@ -16,6 +17,7 @@
     "ignore-walk": "^3.0.1",
     "inherits": "^2.0.3",
     "jquery": "^3.3.1",
+    "method-override": "^2.3.10",
     "minipass": "^2.2.4",
     "minizlib": "^1.1.0",
     "ms": "^2.0.0",

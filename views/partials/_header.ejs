@@ -3,23 +3,19 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<p>Header</p>
-
+<p style=" font-size:50px; font-family:verdana" >TinyApp</p>
 <head>
-  <title>TinyApp</title>
+  <title style="color:blue; size:40px">TinyApp</title>
 </head>
 <body>
-
   <% if(userObject === undefined) { %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
   <%} else { %>
-   <%= "User logged in as " + userObject['email'] %>
+   <p style="font-size:15px;"><%="User logged in as " + userObject['email']%></p>
       <form method="POST" action="/logout">
       <input type="submit" value="logout">
     </form>
   <% } %>
-
 </body>
 </html>

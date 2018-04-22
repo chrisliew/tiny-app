@@ -2,44 +2,39 @@
 <html lang="en">
 <!-- Used to display URL and all it's shortened forms -->
 
-<header>
+<header style="font-size:30px">
   <% include ./partials/_header %>
 </header>
 
 <head>
-  <title>TinyApp</title>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abril Fatface">
 </head>
 
-
-<body>
+<body style="font-size:20px;font-family:'Abril Fatface'"; >
   <% if(cookies) {%>
-    <a href="/urls/new">Create a New Short Link</a>
-    <p>Shortened and Full Length URL Table</p>
+    <a href="/urls/new">Create a New Short URL</a>
+    <p style="font-size:30px;">Your Short URLs</p>
     <table>
-        <tr>
-          <th>UserID</th>
-          <th>Short URL</th>
-          <th>Long URL</th>
-          <th>Edit</th>
-          <th>Delete</th>
-          <th>Date Created</th>
+      <tr>
+        <th>Short URL</th>
+        <th>Long URL</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>Date Created</th>
       <% for(var newKeys in filteredDatabase) { %>
         <tr>
-            <td><%= filteredDatabase[newKeys]['userID'] %></td>
-            <td><a href="/u/<%=newKeys%>">http://localhost:8080/<%=newKeys%></a></td>
-            <td><%= filteredDatabase[newKeys]['longURL'] %></td>
-            <td><a href="/urls/<%=newKeys%>">Edit</a></td>
-            <td><form method="POST" action="/urls/<%=newKeys%>/delete">
-                <button type="submit">Delete</button></form></td>
-            <td><%= filteredDatabase[newKeys]['createDate']%></td>
+          <td style="padding:0 15px 0 15px;"><a href="/u/<%=newKeys%>">http://localhost:8080/<%=newKeys%></a></td>
+          <td style="padding:0 15px 0 15px;"><%= filteredDatabase[newKeys]['longURL'] %></td>
+          <td style="padding:0 15px 0 15px;"><button style="height:30px;width;50px"><a href="/urls/<%=newKeys%>">Edit</a></button></td>
+          <td style="padding:0 15px 0 15px;"><form method="POST" action="/urls/<%=newKeys%>/delete">
+              <button style="height:30px;width;50px" type="submit"><u>Delete</u></button></form></td>
+          <td style="padding:0 15px 0 15px;"><%= filteredDatabase[newKeys]['createDate']%></td>
           <% } %>
         </tr>
     </table>
   <%} else {%>
     <p> Please login or register above to create or see your short URL's </p>
   <%} %>
-
-
 </body>
 </html>
 

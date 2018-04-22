@@ -4,17 +4,19 @@ Note also contains 1 input so when this form is submitted, it will make a reques
 -->
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-  <body style="font-size:20px; padding:50px;">
-    <% include partials/_header %>
+<header style="font-size:30px">
+  <% include ./partials/_header %>
+</header>
+<head>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abril Fatface">
+</head>
 
-
+  <body style="font-size:30px; padding:10px; font-family:Abril Fatface">
     <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300">
+      <label for="longURL">Create New Short URL:</label>
+      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px; height:20px">
       <input type="submit" value="Submit">
     </form>
-
-
   </body>
+
 </html>
