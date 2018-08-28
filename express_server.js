@@ -9,10 +9,17 @@ app.set("view engine", "ejs");
 
 var PORT = process.env.PORT || 8080; // default port 8080
 
+
+
+
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }))
+
+app.use(express.static(__dirname + '/public'));
+
+
 
 //Generates a random 6 digit number for the shortURL.
 function generateRandomString() {
@@ -167,7 +174,7 @@ app.post("/urls", (req, res) => {
       userID: req.session.user_id,
       createDate: today
     };
-    res.redirect('/urls/' + random);
+    res.redirect('/');
   };
 });
 

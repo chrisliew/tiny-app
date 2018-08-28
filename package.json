@@ -23,14 +23,15 @@
     "ms": "^2.0.0",
     "nan": "^2.10.0",
     "needle": "^2.2.0",
-    "nodemon": "^1.17.3",
     "npm-bundled": "^1.0.3",
     "npm-packlist": "^1.1.10",
     "safe-buffer": "^5.1.1",
     "sax": "^1.2.4",
     "yallist": "^3.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

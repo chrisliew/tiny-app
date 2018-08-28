@@ -1,19 +1,82 @@
-<!-- This page will display a single URL and it's shortened form.   -->
 <!DOCTYPE html>
 <html lang="en">
 <header>
-    <% include ./partials/_header %>
 </header>
-<body>
-  <% if(databaseUserID === cookies) {%>
-      <form method="POST" action="/urls/<%= shortURL %>">
-      <p><%= "ShortURL:  " + shortURL + "  Date Created: " + createDate%></p>
-      <input id="updatedLongURL" type="text" name="updatedLongURL" value= <%=longURL%> >
-      <button type="submit">Update</button>
-    <% } else {%>
-    <p>400 Error: You do not own this URL please try another one</p>
-  <% } %>
-  </form>
-</body>
-</html>
 
+<head>
+  <style>
+    body {
+      font-family: Rakkas;
+      background: #4CA1AF;
+      background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF);
+      background: linear-gradient(to right, #C4E0E5, #4CA1AF);
+    }
+
+    .container-edit{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container-edit form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30em;
+      flex-direction: column;
+      height: 15em;
+      border: 1px solid black;
+      background-color: #464343;
+      color: white;
+    }
+
+    .container-edit button {
+      width: 30%;
+      height: 2em;
+      margin-top: 2em;
+      font-size: 1em;
+      color: #fff;
+      text-align: center;
+      background: black;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+      outline: 0;
+    }
+
+    .date-created {
+      width: 20em;
+      margin-top: 1em;
+      font-size: larger;
+      text-align: center;
+    }
+
+    .container-edit h3 {
+      margin: 0;
+    }
+
+  </style>
+</head>
+<% include ./partials/_header %>
+
+<div class="container-edit">
+  
+  <body>
+
+      <% if(databaseUserID === cookies) {%>
+        <form method="POST" action="/urls/<%= shortURL %>">
+          <h3>Edit Your Long URL</h3>
+          <p class="date-created">
+            <%= "Date Created: " + createDate%>
+          </p>
+          <input id="updatedLongURL" type="text" name="updatedLongURL" value=<%=longURL%> >
+          <button type="submit">Update</button>
+          <% } else {%>
+            <p>400 Error: You do not own this URL please try another one</p>
+            <% } %>
+        </form>
+  </body>
+</div>
+
+</html>

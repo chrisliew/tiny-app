@@ -1,10 +1,110 @@
-<!-- This form posts to /login -->
-<form method="POST" action="/login">
-  <p>Login Here:</p>
-  <p>Email: </p>
-  <input  name="emailLogin" type="email">
-  <p>Password:</p>
-  <input name="passwordLogin" type="password">
-  <input type="submit" value="submit">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Rakkas" rel="stylesheet">
+  <style>
+    
+    body {
+      font-family: Rakkas;
+      font-size: 1.5em;
+      background: #4CA1AF;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #C4E0E5, #4CA1AF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+    
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .login {
+      background-color: white;
+      height: 13em;
+      width: 13em; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    form {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    .email {
+      width: 285px;
+      height: 50px;
+      margin-bottom: 25px;
+      padding-left:10px;
+      font-size: 15px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    .password {
+      width: 285px;
+      height: 50px;
+      padding-left:10px;
+      font-size: 15px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .title {
+      width: 100%;
+      font-size: 25px;
+      font-weight: 300;
+      color: white;
+      text-align:center;
+      background: black;
+      margin: 0;
+      line-height: 2em;
+    }
+
+    .submit {
+      width: 100%;
+      height: 50px;
+      padding: 0;
+      font-size: 20px;
+      color: #fff;
+      text-align: center;
+      background: black;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer; 
+      outline:0;
+      width: 95%;
+      margin-top: 1em;
+    }
+    .register {
+      font-size:0.6em;
+
+    }
+  </style>
+</head>
+
+<div class="login-container">
+  <p>TinyApp</p>
+  <div class="login">
+    
+    <form method="POST" action="/login">
+      <p class="title">Login</p>
+      <input class="email" name="emailLogin" type="email" placeholder="Email">
+      
+      <input class="password" name="passwordLogin" type="password" placeholder="Password">
+      
+      <input class="submit" type="submit" value="SUBMIT">
+      <p class="register">New Users Register <a href="/register">Here</a></p>
+    </form>
+  </div>
+</div>
+
 

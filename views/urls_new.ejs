@@ -1,22 +1,70 @@
-<!-- Creates a new form to submit URL's to be shortened.
-Action indicates the URL to submit to and the method is the HTTP method to use when submitting form.
-Note also contains 1 input so when this form is submitted, it will make a request to POST /urls, and body will contain one URL-encoded name value pair with name longURL
--->
 <!DOCTYPE html>
 <html lang="en">
-<header style="font-size:30px">
-  <% include ./partials/_header %>
-</header>
 <head>
-  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abril Fatface">
+  <style>
+    body {
+      font-family: Rakkas;
+      background: #4CA1AF;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #C4E0E5, #4CA1AF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    .container-urls-new {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container-urls-new form {
+      display: flex;
+      justify-content: center;
+      align-items:center;
+      width: 30em;
+      flex-direction: column;
+      height: 15em;
+      border: 1px solid black;
+      background-color: #464343;
+      color: white;
+    }
+
+    .container-urls-new .submit-url {
+      width: 30%;
+      height: 2em;
+      margin-top: 2em;
+      font-size: 1em;
+      color: #fff;
+      text-align: center;
+      background: black;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer; 
+      outline:0;
+    }
+
+    #longURL {
+      width: 20em;
+      margin-top: 1em;
+      font-size: larger;
+    }
+
+    .container-urls-new p{
+      margin: 0;
+    }
+
+  </style>
 </head>
 
-  <body style="font-size:30px; padding:10px; font-family:Abril Fatface">
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Create New Short URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px; height:20px">
-      <input type="submit" value="Submit">
+<% include ./partials/_header %>
+
+<div class="container-urls-new">
+  <body>
+    <form action="/urls" method="POST">
+      <h2>TinyApp URL Shortener:</h2>
+      <p>Enter website URL you want to shorten, must start with https://</p>
+      <input id="longURL" type="text" name="longURL" placeholder="https://">
+      <input class="submit-url" type="submit" value="Submit">
     </form>
   </body>
+</div>
 
 </html>

@@ -1,21 +1,73 @@
-<!-- views/partials/header.ejs -->
-<!-- Header is included to keep code dry.  Also can be used to separate from other parts of page. -->
-
 <!DOCTYPE html>
 <html lang="en">
-<p style=" font-size:50px; font-family:verdana" >TinyApp</p>
+
 <head>
-  <title style="color:blue; size:40px">TinyApp</title>
+  <link href="https://fonts.googleapis.com/css?family=Rakkas" rel="stylesheet">
+  <title>TinyApp</title>
+  <style>
+
+    body {
+      font-family: Rakkas;
+    }
+
+    .container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      flex-direction: column;
+    }
+
+    .container-content {
+      width: 16em;
+      height: 4em;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .container body {
+      text-align: right;
+    }
+
+     .submit {
+      width: 50%;
+      height: 20px;
+      font-size: 10px;
+      color: #fff;
+      text-align: center;
+      background: black;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer; 
+      outline:0;
+    }
+
+    .logged-in {
+      margin-bottom:0;
+    }
+
+  </style>
 </head>
-<body>
-  <% if(userObject === undefined) { %>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
-  <%} else { %>
-   <p style="font-size:15px;"><%="User logged in as " + userObject['email']%></p>
-      <form method="POST" action="/logout">
-      <input type="submit" value="logout">
-    </form>
-  <% } %>
-</body>
+
+<div class="container">
+  <div class="container-content">
+    <body>
+      <div>
+        <% if(userObject === undefined) { %>
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+          <%} else { %>
+            <p class="logged-in">
+              <%="User logged in as " + userObject['email']%>
+            </p>
+            <form method="POST" action="/logout">
+              <input class="submit" type="submit" value="logout">
+            </form>
+            <% } %>
+      </div>
+    </body>
+  </div>
+</div>
+
 </html>
